@@ -1,10 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
+
+
 require("dotenv").config();
 
 const sequelize = require("./config/db");
 const swaggerSpec = require("./config/swagger");
+const authRoutes = require("./routes/authRoutes");
+const authMiddleware = require("./middleware/authMiddleware");
+const categoryRoutes = require("./routes/categoryRoutes");
 
 const app = express();
 
@@ -32,3 +37,8 @@ sequelize
   .catch((error) => {
     console.error("Database connection failed:", error);
   });
+
+  app.use("/api/auth", authRoutes);//e maron swagger.ui connection nga authRoutes.js dhe e vendos ne /api/auth
+
+  app.use("/api/categories", categoryRoutes);//e maron swagger.ui connection nga categoryRoutes.js dhe e vendos ne /api/categories
+
