@@ -1,0 +1,178 @@
+const express = require("express");
+const router = express.Router();
+
+const productController = require("../controllers/productController");
+const authMiddleware = require("../middleware/authMiddleware");
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: Product management
+ */
+
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Get all products
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+router.get("/", authMiddleware, productController.getAllProducts);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   get:
+ *     summary: Get product by id
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+router.get("/:id", authMiddleware, productController.getProductById);
+
+/**
+ * @swagger
+ * /api/products:
+ *   post:
+ *     summary: Create product
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - sku_code
+ *               - name
+ *               - category_id
+ *               - brand_id
+ *               - price
+ *             properties:
+ *               sku_code:
+ *                 type: string
+ *                 example: NK-1001
+ *               name:
+ *                 type: string
+ *                 example: Nike Hoodie
+ *               category_id:
+ *                 type: integer
+ *                 example: 1
+ *               brand_id:
+ *                 type: integer
+ *                 example: 1
+ *               size:
+ *                 type: string
+ *                 example: L
+ *               color:
+ *                 type: string
+ *                 example: Black
+ *               price:
+ *                 type: number
+ *                 example: 59.99
+ *               discount_price:
+ *                 type: number
+ *                 example: 49.99
+ *               stock_quantity:
+ *                 type: integer
+ *                 example: 20
+ *               image_url:
+ *                 type: string
+ *                 example: https://example.com/image.jpg
+ *               description:
+ *                 type: string
+ *                 example: Premium hoodie
+ *     responses:
+ *       201:
+ *         description: Product created
+ */
+router.post("/", authMiddleware, productController.createProduct);
+
+ /**
+  * @swagger
+  * /api/products/{id}:
+  *   put:
+  *     summary: Update product
+  *     tags: [Products]
+  *     security:
+  *       - bearerAuth: []
+  *     parameters:
+  *       - in: path
+  *         name: id
+  *         required: true
+  *         schema:
+  *           type: integer
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               sku_code:
+  *                 type: string
+  *               name:
+  *                 type: string
+  *               category_id:
+  *                 type: integer
+  *               brand_id:
+  *                 type: integer
+  *               size:
+  *                 type: string
+  *               color:
+  *                 type: string
+  *               price:
+  *                 type: number
+  *               discount_price:
+  *                 type: number
+  *               stock_quantity:
+  *                 type: integer
+  *               image_url:
+  *                 type: string
+  *               description:
+  *                 type: string
+  *               status:
+  *                 type: string
+  *     responses:
+  *       200:
+  *         description: Product updated
+  */
+router.put("/:id", authMiddleware, productController.updateProduct);
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   delete:
+ *     summary: Delete product
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Product deleted
+ */
+router.delete("/:id", authMiddleware, productController.deleteProduct);
+
+module.exports = router;

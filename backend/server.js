@@ -10,6 +10,10 @@ const swaggerSpec = require("./config/swagger");
 const authRoutes = require("./routes/authRoutes");
 const authMiddleware = require("./middleware/authMiddleware");
 const categoryRoutes = require("./routes/categoryRoutes");
+const brandRoutes = require("./routes/brandRoutes");
+const productRoutes = require("./routes/productRoutes");
+const customerRoutes = require("./routes/customerRoutes");
+
 
 const app = express();
 
@@ -42,3 +46,8 @@ sequelize
 
   app.use("/api/categories", categoryRoutes);//e maron swagger.ui connection nga categoryRoutes.js dhe e vendos ne /api/categories
 
+  app.use("/api/brands", brandRoutes);//e maron swagger.ui connection nga brandRoutes.js dhe e vendos ne /api/brands
+  
+  app.use("/api/products", productRoutes);//e maron swagger.ui connection nga productRoutes.js dhe e vendos ne /api/products
+
+app.use("/api/customers", customerRoutes);//e maron swagger.ui connection nga customerRoutes.js dhe e vendos ne /api/customers
