@@ -15,6 +15,11 @@ const productRoutes = require("./routes/productRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const supplierRoutes = require("./routes/supplierRoutes");
 const saleRoutes = require("./routes/saleRoutes");
+const purchaseOrderRoutes = require("./routes/purchaseOrderRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+
+
+
 
 
 
@@ -60,3 +65,7 @@ sequelize
   app.use("/api/suppliers", supplierRoutes);//e maron swagger.ui connection nga supplierRoutes.js dhe e vendos ne /api/suppliers
 
   app.use("/api/sales", saleRoutes);//e maron swagger.ui connection nga saleRoutes.js dhe e vendos ne /api/sales
+
+  app.use("/api/purchase-orders", purchaseOrderRoutes);//e maron swagger.ui connection nga purchaseOrderRoutes.js dhe e vendos ne /api/purchase-orders
+
+  app.use("/api/dashboard", dashboardRoutes);//e maron swagger.ui connection nga dashboardRoutes.js dhe e vendos ne /api/dashboard

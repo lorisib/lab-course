@@ -39,6 +39,13 @@ const Sale = sequelize.define(
       type: DataTypes.ENUM("completed", "returned", "cancelled"),
       defaultValue: "completed",
     },
+
+
+    sale_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
   },
   {
     tableName: "Sales",
