@@ -5,6 +5,15 @@ exports.createProduct = async (req, res) => {
   try {
     const product = await Product.create(req.body);
 
+    await logActivity({
+  user_id: req.user.id,
+  action_type: "PRODUCT_CREATED",
+  entity_name: "Products",
+  entity_id: product.id,
+  description: "Product created",
+  ip_address: req.ip,
+});
+
     res.status(201).json({
       message: "Product created",
       data: product,
@@ -61,6 +70,15 @@ exports.updateProduct = async (req, res) => {
 
     await product.update(req.body);
 
+    await logActivity({
+  user_id: req.user.id,
+  action_type: "PRODUCT_UPDATED",
+  entity_name: "Products",
+  entity_id: product.id,
+  description: "Product updated",
+  ip_address: req.ip,
+});
+
     res.json({
       message: "Product updated",
       data: product,
@@ -84,6 +102,15 @@ exports.deleteProduct = async (req, res) => {
     }
 
     await product.destroy();
+
+    await logActivity({
+  user_id: req.user.id,
+  action_type: "PRODUCT_DELETED",
+  entity_name: "Products",
+  entity_id: product.id,
+  description: "Product deleted",
+  ip_address: req.ip,
+});
 
     res.json({
       message: "Product deleted",

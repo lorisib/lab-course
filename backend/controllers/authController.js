@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { logActivity } = require("../utils/activityLogger");
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -36,6 +37,16 @@ exports.register = async (req, res) => {
     });
 
     const token = generateToken(user);
+
+    await logActivity({
+      user_id: user.id,
+      action_type: "USER_REGISTER",
+      entity_name: "Users",
+      entity_id: user.id,
+      description: "New user registered",
+      ip_address: req.ip,
+});
+
 
     res.status(201).json({
       message: "Përdoruesi u regjistrua me sukses",
@@ -76,6 +87,19 @@ exports.login = async (req, res) => {
     }
 
     const token = generateToken(user);
+
+
+
+await logActivity({
+  user_id: user.id,
+  action_type: "LOGIN_SUCCESS",
+  entity_name: "Users",
+  entity_id: user.id,
+  description: "User logged in",
+  ip_address: req.ip,
+});
+
+
 
     res.json({
       message: "Login i suksesshëm",

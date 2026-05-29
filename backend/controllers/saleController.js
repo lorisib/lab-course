@@ -1,6 +1,7 @@
 const Sale = require("../models/Sales");
 const SaleDetails = require("../models/SaleDetails");
 const Product = require("../models/Product");
+const { logActivity } = require("../utils/activityLogger");
 
 exports.createSale = async (req, res) => {
   try {
@@ -39,6 +40,15 @@ exports.createSale = async (req, res) => {
     await sale.update({
       total_amount: total,
     });
+
+    await logActivity({
+  user_id: user_id,
+  action_type: "SALE_COMPLETED",
+  entity_name: "Sales",
+  entity_id: sale.id,
+  description: "Sale completed",
+  ip_address: req.ip,
+});
 
     res.status(201).json({
       message: "Sale created",
