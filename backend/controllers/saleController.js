@@ -2,6 +2,7 @@ const Sale = require("../models/Sales");
 const SaleDetails = require("../models/SaleDetails");
 const Product = require("../models/Product");
 const { logActivity } = require("../utils/activityLogger");
+const { checkLowStock } = require("./lowStockController");
 
 exports.createSale = async (req, res) => {
   try {
@@ -32,9 +33,11 @@ exports.createSale = async (req, res) => {
       });
 
       // ZBRIT STOCK
-      await product.update({
-        stock_quantity: product.stock_quantity - item.quantity,
-      });
+     await product.update({
+  stock_quantity: product.stock_quantity - item.quantity,
+});
+
+await checkLowStock(product);
     }
 
     await sale.update({

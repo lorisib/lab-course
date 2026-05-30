@@ -55,6 +55,11 @@ const Product = sequelize.define(
       defaultValue: 0,
     },
 
+    low_stock_threshold: {
+     type: DataTypes.INTEGER,
+     defaultValue: 5,
+    },
+
     image_url: {
       type: DataTypes.STRING,
       allowNull: true,

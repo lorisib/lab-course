@@ -42,6 +42,8 @@ router.get("/", authMiddleware, productController.getAllProducts);
  *     responses:
  *       200:
  *         description: Success
+ *       404:
+ *         description: Product not found
  */
 router.get("/:id", authMiddleware, productController.getProductById);
 
@@ -93,68 +95,79 @@ router.get("/:id", authMiddleware, productController.getProductById);
  *               stock_quantity:
  *                 type: integer
  *                 example: 20
+ *               low_stock_threshold:
+ *                 type: integer
+ *                 example: 5
  *               image_url:
  *                 type: string
  *                 example: https://example.com/image.jpg
  *               description:
  *                 type: string
  *                 example: Premium hoodie
+ *               status:
+ *                 type: string
+ *                 example: active
  *     responses:
  *       201:
  *         description: Product created
  */
 router.post("/", authMiddleware, productController.createProduct);
 
- /**
-  * @swagger
-  * /api/products/{id}:
-  *   put:
-  *     summary: Update product
-  *     tags: [Products]
-  *     security:
-  *       - bearerAuth: []
-  *     parameters:
-  *       - in: path
-  *         name: id
-  *         required: true
-  *         schema:
-  *           type: integer
-  *     requestBody:
-  *       required: true
-  *       content:
-  *         application/json:
-  *           schema:
-  *             type: object
-  *             properties:
-  *               sku_code:
-  *                 type: string
-  *               name:
-  *                 type: string
-  *               category_id:
-  *                 type: integer
-  *               brand_id:
-  *                 type: integer
-  *               size:
-  *                 type: string
-  *               color:
-  *                 type: string
-  *               price:
-  *                 type: number
-  *               discount_price:
-  *                 type: number
-  *               stock_quantity:
-  *                 type: integer
-  *               image_url:
-  *                 type: string
-  *               description:
-  *                 type: string
-  *               status:
-  *                 type: string
-  *     responses:
-  *       200:
-  *         description: Product updated
-  */
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   put:
+ *     summary: Update product
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               sku_code:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               category_id:
+ *                 type: integer
+ *               brand_id:
+ *                 type: integer
+ *               size:
+ *                 type: string
+ *               color:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               discount_price:
+ *                 type: number
+ *               stock_quantity:
+ *                 type: integer
+ *               low_stock_threshold:
+ *                 type: integer
+ *               image_url:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Product updated
+ *       404:
+ *         description: Product not found
+ */
 router.put("/:id", authMiddleware, productController.updateProduct);
+
 /**
  * @swagger
  * /api/products/{id}:
@@ -172,6 +185,8 @@ router.put("/:id", authMiddleware, productController.updateProduct);
  *     responses:
  *       200:
  *         description: Product deleted
+ *       404:
+ *         description: Product not found
  */
 router.delete("/:id", authMiddleware, productController.deleteProduct);
 
