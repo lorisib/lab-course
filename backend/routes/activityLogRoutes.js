@@ -3,6 +3,7 @@ const router = express.Router();
 
 const activityController = require("../controllers/activityLogController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
 
 /**
  * @swagger
@@ -23,6 +24,6 @@ const authMiddleware = require("../middleware/authMiddleware");
  *       200:
  *         description: Success
  */
-router.get("/", authMiddleware, activityController.getLogs);
+router.get("/", authMiddleware,requireRole(["Admin", "Manager"]), activityController.getLogs);
 
 module.exports = router;

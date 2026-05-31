@@ -3,6 +3,8 @@ const router = express.Router();
 
 const brandController = require("../controllers/brandController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
+
 
 /**
  * @swagger
@@ -74,7 +76,7 @@ router.get("/:id", authMiddleware, brandController.getBrandById);
  *       201:
  *         description: Created
  */
-router.post("/", authMiddleware, brandController.createBrand);
+router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), brandController.createBrand);
 
 /**
  * @swagger
@@ -116,7 +118,7 @@ router.post("/", authMiddleware, brandController.createBrand);
  *       200:
  *         description: Updated
  */
-router.put("/:id", authMiddleware, brandController.updateBrand);
+router.put("/:id", authMiddleware,requireRole(["Admin", "Manager"]), brandController.updateBrand);
 /**
  * @swagger
  * /api/brands/{id}:
@@ -135,6 +137,6 @@ router.put("/:id", authMiddleware, brandController.updateBrand);
  *       200:
  *         description: Deleted
  */
-router.delete("/:id", authMiddleware, brandController.deleteBrand);
+router.delete("/:id", authMiddleware,requireRole(["Admin", "Manager"]), brandController.deleteBrand);
 
 module.exports = router;

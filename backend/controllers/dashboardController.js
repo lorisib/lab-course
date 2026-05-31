@@ -1,7 +1,10 @@
+const sequelize = require("../config/db");
 const { Sequelize } = require("sequelize");
 const Sale = require("../models/Sales");
-const Product = require("../models/Product");
+const { Product } = require("../models");
+const SaleDetails = require("../models/SaleDetails");
 const Customer = require("../models/Customer");
+
 
 exports.getKPIs = async (req, res) => {
   try {
@@ -10,6 +13,8 @@ exports.getKPIs = async (req, res) => {
     const totalProducts = await Product.count();
 
     const totalCustomers = await Customer.count();
+
+    const revenue = await Sale.sum("total_amount");
 
     const lowStockProducts = await Product.count({
       where: {
@@ -23,6 +28,7 @@ exports.getKPIs = async (req, res) => {
       totalSales: totalSales || 0,
       totalProducts,
       totalCustomers,
+      revenue,
       lowStockProducts,
     });
   } catch (error) {
@@ -72,4 +78,35 @@ exports.getMonthlySales = async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
+};
+
+exports.getBestSellingProducts = async (req, res) => {
+  try {
+    const products = await SaleDetails.findAll({
+      attributes: [
+        "product_id",
+        [
+          sequelize.fn("SUM", sequelize.col("quantity")),
+          "total_sold",
+        ],
+      ],
+      include: [
+        {
+          model: Product,
+          attributes: ["name", "price", "stock_quantity"],
+        },
+      ],
+      group: ["product_id"],
+      order: [[sequelize.literal("total_sold"), "DESC"]],
+      limit: 10,
+    });
+
+    res.json(products);
+  } catch (error) {
+console.log(error);
+
+res.status(500).json({
+  message: error.message,
+  error: error.original || error
+});  }
 };

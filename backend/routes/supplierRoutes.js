@@ -3,6 +3,7 @@ const router = express.Router();
 
 const supplierController = require("../controllers/supplierController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
 
 /**
  * @swagger
@@ -43,7 +44,7 @@ router.get("/", authMiddleware, supplierController.getAllSuppliers);
  *       200:
  *         description: Success
  */
-router.get("/:id", authMiddleware, supplierController.getSupplierById);
+router.get("/:id", authMiddleware,requireRole(["Admin", "Manager"]) ,supplierController.getSupplierById);
 
 /**
  * @swagger
@@ -83,7 +84,7 @@ router.get("/:id", authMiddleware, supplierController.getSupplierById);
  *       201:
  *         description: Supplier created
  */
-router.post("/", authMiddleware, supplierController.createSupplier);
+router.post("/", authMiddleware, requireRole(["Admin", "Manager"]), supplierController.createSupplier);
 
 /**
  * @swagger
@@ -126,7 +127,7 @@ router.post("/", authMiddleware, supplierController.createSupplier);
  *       200:
  *         description: Updated
  */
-router.put("/:id", authMiddleware, supplierController.updateSupplier);
+router.put("/:id", authMiddleware, requireRole(["Admin", "Manager"]), supplierController.updateSupplier);
 
 /**
  * @swagger
@@ -146,6 +147,6 @@ router.put("/:id", authMiddleware, supplierController.updateSupplier);
  *       200:
  *         description: Deleted
  */
-router.delete("/:id", authMiddleware, supplierController.deleteSupplier);
+router.delete("/:id", authMiddleware,requireRole(["Admin", "Manager"]), supplierController.deleteSupplier);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const router = express.Router();
 
 const customerController = require("../controllers/customerController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
 
 /**
  * @swagger
@@ -90,7 +91,7 @@ router.get("/:id", authMiddleware, customerController.getCustomerById);
  *       201:
  *         description: Created
  */
-router.post("/", authMiddleware, customerController.createCustomer);
+router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), customerController.createCustomer);
 
 /**
  * @swagger
@@ -137,7 +138,7 @@ router.post("/", authMiddleware, customerController.createCustomer);
  *       404:
  *         description: Not found
  */
-router.put("/:id", authMiddleware, customerController.updateCustomer);
+router.put("/:id", authMiddleware,requireRole(["Admin", "Manager"]), customerController.updateCustomer);
 
 /**
  * @swagger
@@ -159,6 +160,6 @@ router.put("/:id", authMiddleware, customerController.updateCustomer);
  *       404:
  *         description: Not found
  */
-router.delete("/:id", authMiddleware, customerController.deleteCustomer);
+router.delete("/:id", authMiddleware,requireRole(["Admin", "Manager"]), customerController.deleteCustomer);
 
 module.exports = router;

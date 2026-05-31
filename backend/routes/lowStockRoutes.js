@@ -3,6 +3,8 @@ const router = express.Router();
 
 const lowStockController = require("../controllers/lowStockController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
+
 
 /**
  * @swagger
@@ -23,7 +25,7 @@ const authMiddleware = require("../middleware/authMiddleware");
  *       200:
  *         description: Success
  */
-router.get("/", authMiddleware, lowStockController.getAlerts);
+router.get("/", authMiddleware,requireRole(["Admin", "Manager"]) ,lowStockController.getAlerts);
 
 /**
  * @swagger
@@ -46,6 +48,7 @@ router.get("/", authMiddleware, lowStockController.getAlerts);
 router.put(
   "/:id/resolve",
   authMiddleware,
+  requireRole(["Admin", "Manager"]),
   lowStockController.resolveAlert
 );
 

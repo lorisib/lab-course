@@ -1,4 +1,4 @@
-const Product = require("../models/Product");
+const { Product, Category, Brand } = require("../models");
 const { logActivity } = require("../utils/activityLogger");
 
 // CREATE
@@ -47,7 +47,9 @@ exports.createProduct = async (req, res) => {
 // GET ALL
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+  include: ["Category", "Brand"],
+});
 
     res.json(products);
   } catch (error) {
@@ -60,8 +62,18 @@ exports.getAllProducts = async (req, res) => {
 // GET BY ID
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findByPk(req.params.id);
-
+      const product = await Product.findByPk(req.params.id, {
+        include: [
+    {
+      model: Category,
+      as: "Category",
+    },
+    {
+      model: Brand,
+      as: "Brand",
+    },
+  ],
+});
     if (!product) {
       return res.status(404).json({
         message: "Product not found"

@@ -3,6 +3,7 @@ const router = express.Router();
 
 const categoryController = require("../controllers/categoryController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
 
 /**
  * @swagger
@@ -77,7 +78,7 @@ router.get("/:id", authMiddleware, categoryController.getCategoryById);
  *       201:
  *         description: Created
  */
-router.post("/", authMiddleware, categoryController.createCategory);
+router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), categoryController.createCategory);
 
 /**
  * @swagger
@@ -112,7 +113,7 @@ router.post("/", authMiddleware, categoryController.createCategory);
  *       404:
  *         description: Not found
  */
-router.put("/:id", authMiddleware, categoryController.updateCategory);
+router.put("/:id", authMiddleware,requireRole(["Admin", "Manager"]), categoryController.updateCategory);
 
 /**
  * @swagger
@@ -134,6 +135,6 @@ router.put("/:id", authMiddleware, categoryController.updateCategory);
  *       404:
  *         description: Not found
  */
-router.delete("/:id", authMiddleware, categoryController.deleteCategory);
+router.delete("/:id", authMiddleware,requireRole(["Admin", "Manager"]), categoryController.deleteCategory);
 
 module.exports = router;

@@ -3,6 +3,8 @@ const router = express.Router();
 
 const dashboardController = require("../controllers/dashboardController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
+
 
 /**
  * @swagger
@@ -25,7 +27,7 @@ const authMiddleware = require("../middleware/authMiddleware");
  *       401:
  *         description: Unauthorized
  */
-router.get("/kpis", authMiddleware, dashboardController.getKPIs);
+router.get("/kpis", authMiddleware,requireRole(["Admin", "Manager"]) ,dashboardController.getKPIs);
 
 /**
  * @swagger
@@ -42,9 +44,21 @@ router.get("/kpis", authMiddleware, dashboardController.getKPIs);
  *         description: Unauthorized
  */
 router.get(
-  "/monthly-sales",
-  authMiddleware,
-  dashboardController.getMonthlySales
-);
+  "/monthly-sales", authMiddleware, requireRole(["Admin", "Manager"]), dashboardController.getMonthlySales);
+
+/**
+ * @swagger
+ * /api/dashboard/best-selling-products:
+ *   get:
+ *     summary: Get best selling products
+ *     tags: [Dashboard]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of top selling products
+ */
+router.get("/best-selling-products", authMiddleware, requireRole(["Admin", "Manager"]), dashboardController.getBestSellingProducts);
+
 
 module.exports = router;

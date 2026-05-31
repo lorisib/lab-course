@@ -5,6 +5,9 @@ const purchaseOrderController = require("../controllers/purchaseOrderController"
 
 const authMiddleware = require("../middleware/authMiddleware");
 
+const requireRole = require("../middleware/roleMiddleware");
+
+
 /**
  * @swagger
  * tags:
@@ -54,6 +57,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 router.post(
   "/",
   authMiddleware,
+  requireRole(["Admin", "Manager"]),
   purchaseOrderController.createPurchaseOrder
 );
 
@@ -71,7 +75,7 @@ router.post(
  */
 router.get(
   "/",
-  authMiddleware,
+  authMiddleware,requireRole(["Admin", "Manager"]),
   purchaseOrderController.getAllPurchaseOrders
 );
 
@@ -96,6 +100,7 @@ router.get(
 router.get(
   "/:id",
   authMiddleware,
+  requireRole(["Admin", "Manager"]),
   purchaseOrderController.getPurchaseOrderById
 );
 
@@ -120,6 +125,7 @@ router.get(
 router.delete(
   "/:id",
   authMiddleware,
+    requireRole(["Admin", "Manager"]),
   purchaseOrderController.deletePurchaseOrder
 );
 

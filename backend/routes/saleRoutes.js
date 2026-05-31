@@ -3,6 +3,8 @@ const router = express.Router();
 
 const saleController = require("../controllers/saleController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
+
 
 /**
  * @swagger

@@ -3,6 +3,7 @@ const router = express.Router();
 
 const productController = require("../controllers/productController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
 
 /**
  * @swagger
@@ -111,7 +112,7 @@ router.get("/:id", authMiddleware, productController.getProductById);
  *       201:
  *         description: Product created
  */
-router.post("/", authMiddleware, productController.createProduct);
+router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), productController.createProduct);
 
 /**
  * @swagger
@@ -166,7 +167,7 @@ router.post("/", authMiddleware, productController.createProduct);
  *       404:
  *         description: Product not found
  */
-router.put("/:id", authMiddleware, productController.updateProduct);
+router.put("/:id", authMiddleware,  requireRole(["Admin", "Manager"] ), productController.updateProduct);
 
 /**
  * @swagger
@@ -188,6 +189,6 @@ router.put("/:id", authMiddleware, productController.updateProduct);
  *       404:
  *         description: Product not found
  */
-router.delete("/:id", authMiddleware, productController.deleteProduct);
+router.delete("/:id", authMiddleware, requireRole(["Admin", "Manager"]), productController.deleteProduct);
 
 module.exports = router;
