@@ -20,6 +20,10 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const activityLogRoutes = require("./routes/activityLogRoutes");
 const lowStockRoutes = require("./routes/lowStockRoutes");
 const cookieParser = require("cookie-parser");
+const loyaltyCardRoutes = require("./routes/loyaltyCardRoutes");
+
+
+
 
 
 
@@ -74,3 +78,5 @@ sequelize
   app.use("/api/activity-logs", activityLogRoutes);//e maron swagger.ui connection nga activityLogRoutes.js dhe e vendos ne /api/activity-logs
 
   app.use("/api/low-stock", lowStockRoutes); //e maron swagger.ui connection nga lowStockRoutes.js dhe e vendos ne /api/low-stock
+
+  app.use("/api/loyalty", loyaltyCardRoutes);//e maron swagger.ui connection nga loyaltyCardRoutes.js dhe e vendos ne /api/loyalty-cards

@@ -10,40 +10,13 @@ const Customer = sequelize.define(
       primaryKey: true,
     },
 
-    first_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    last_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    email: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
-    address: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
-    city: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
-    birth_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
+    first_name: DataTypes.STRING,
+    last_name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    address: DataTypes.STRING,
+    city: DataTypes.STRING,
+    birth_date: DataTypes.DATEONLY,
 
     total_points: {
       type: DataTypes.INTEGER,
