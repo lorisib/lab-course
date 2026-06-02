@@ -21,6 +21,7 @@ build/
 
 # Frontend build assets
 frontend/build/
+frontend/node_modules/
 
 # Uploads and generated content
 backend/uploads/

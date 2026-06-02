@@ -1,6 +1,6 @@
 const { ProductDiscount } = require("../models");
 
-// ASSIGN DISCOUNT TO PRODUCT
+// Cakto zbritje per nje produkt
 exports.assignDiscount = async (req, res) => {
   try {
     const { product_id, discount_id } = req.body;

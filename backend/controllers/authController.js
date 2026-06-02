@@ -14,7 +14,7 @@ const {
 const { logActivity } = require("../utils/activityLogger");
 
 
-// ===================== REGISTER
+//  REGISTER
 exports.register = async (req, res) => {
   try {
     const { first_name, last_name, email, password, phone_number } = req.body;
@@ -75,7 +75,7 @@ exports.register = async (req, res) => {
 };
 
 
-// ===================== LOGIN
+// LOGIN
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -181,7 +181,7 @@ exports.refreshToken = async (req, res) => {
 };
 
 
-// ===================== ME
+// ME
 exports.me = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
@@ -205,7 +205,7 @@ exports.me = async (req, res) => {
 };
 
 
-// ===================== LOGOUT
+// LOGOUT
 exports.logout = async (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;

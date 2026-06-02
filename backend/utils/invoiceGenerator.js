@@ -28,18 +28,14 @@ exports.generateInvoicePDF = async ({
       const stream = fs.createWriteStream(filePath);
       doc.pipe(stream);
 
-      // =====================
       // HEADER
-      // =====================
       doc
         .fontSize(20)
         .text("INVOICE", { align: "center" });
 
       doc.moveDown();
 
-      // =====================
       // INFO
-      // =====================
       doc.fontSize(12);
       doc.text(`Invoice Number: ${sale.invoice_number}`);
       doc.text(
@@ -49,15 +45,11 @@ exports.generateInvoicePDF = async ({
 
       doc.moveDown();
 
-      // =====================
       // TABLE HEADER
-      // =====================
       doc.fontSize(12).text("Items:");
       doc.moveDown(0.5);
 
-      // =====================
       // ITEMS
-      // =====================
       items.forEach((item, index) => {
         doc.text(
           `${index + 1}. ${item.name} | Qty: ${item.quantity} | Price: ${item.price} | Total: ${item.total}`
@@ -66,9 +58,7 @@ exports.generateInvoicePDF = async ({
 
       doc.moveDown();
 
-      // =====================
       // TOTAL
-      // =====================
       doc.fontSize(14).text(`TOTAL: ${total} EUR`, {
         align: "right"
       });

@@ -25,9 +25,7 @@ const ProductDiscount = require("./ProductDiscount");
 
 
 
-// =====================
-// RELATIONS
-// =====================
+// LIDHJET
 
 // PRODUCT
 Product.belongsTo(Category, { foreignKey: "category_id" });

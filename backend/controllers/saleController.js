@@ -9,16 +9,14 @@ const { getActiveDiscount, applyDiscount } = require("../utils/discountHelper");
 const { logActivity } = require("../utils/activityLogger");
 const { checkLowStock } = require("./lowStockController");
 
-// =====================
+
 // POINTS LOGIC
-// =====================
+
 const calculatePoints = (total) => {
   return Math.floor(Number(total) / 10);
 };
 
-// =====================
 // CREATE SALE
-// =====================
 exports.createSale = async (req, res) => {
   try {
     const { customer_id, user_id, items } = req.body;
@@ -47,9 +45,7 @@ exports.createSale = async (req, res) => {
 
     const invoiceItems = [];
 
-    // =====================
     // LOOP ITEMS
-    // =====================
     for (const item of items) {
       const product = await Product.findByPk(item.product_id);
 
@@ -65,9 +61,7 @@ exports.createSale = async (req, res) => {
         });
       }
 
-      // =====================
       // DISCOUNT LOGIC
-      // =====================
       let finalPrice = Number(product.price);
 
       const discount = await getActiveDiscount(product);
@@ -105,9 +99,7 @@ exports.createSale = async (req, res) => {
       });
     }
 
-    // =====================
     // LOYALTY CARD
-    // =====================
     const card = await LoyaltyCard.findOne({
       where: { customer_id }
     });
@@ -125,14 +117,10 @@ exports.createSale = async (req, res) => {
       await card.save();
     }
 
-    // =====================
     // UPDATE SALE TOTAL
-    // =====================
     await sale.update({ total_amount: total });
 
-    // =====================
     // INVOICE GENERATION
-    // =====================
     const pdfPath = await generateInvoicePDF({
       sale,
       customer,
@@ -148,9 +136,7 @@ exports.createSale = async (req, res) => {
       generated_at: new Date()
     });
 
-    // =====================
     // LOG
-    // =====================
     await logActivity({
       user_id,
       action_type: "SALE_CREATED",
@@ -174,9 +160,7 @@ exports.createSale = async (req, res) => {
   }
 };
 
-// =====================
 // GET ALL SALES
-// =====================
 exports.getAllSales = async (req, res) => {
   try {
     const sales = await Sale.findAll();
@@ -188,9 +172,7 @@ exports.getAllSales = async (req, res) => {
   }
 };
 
-// =====================
 // GET BY ID
-// =====================
 exports.getSaleById = async (req, res) => {
   try {
     const sale = await Sale.findByPk(req.params.id);
@@ -209,9 +191,7 @@ exports.getSaleById = async (req, res) => {
   }
 };
 
-// =====================
 // DELETE SALE
-// =====================
 exports.deleteSale = async (req, res) => {
   try {
     const sale = await Sale.findByPk(req.params.id);
