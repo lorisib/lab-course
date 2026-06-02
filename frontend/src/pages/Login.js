@@ -5,6 +5,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -16,7 +17,7 @@ export default function Login() {
 
       console.log("LOGIN RESPONSE:", res.data);
 
-      // 🔥 FIX: kap token në mënyrë fleksibile
+
       const token =
         res.data.token ||
         res.data.accessToken ||
@@ -27,7 +28,8 @@ export default function Login() {
         return;
       }
 
-      localStorage.setItem("token", token);
+localStorage.setItem("token", res.data.accessToken);
+localStorage.setItem("user", JSON.stringify(res.data.user));
 
       window.location.href = "/dashboard";
     } catch (err) {

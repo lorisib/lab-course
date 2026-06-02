@@ -3,6 +3,7 @@ const router = express.Router();
 
 const discountController = require("../controllers/discountController");
 const auth = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/roleMiddleware");
 
 /**
  * @swagger
@@ -62,4 +63,50 @@ router.post("/", auth, discountController.createDiscount);
  */
 router.get("/", auth, discountController.getAllDiscounts);
 
+/**
+ * @swagger
+ * /api/discounts/{id}:
+ *   put:
+ *     summary: Update discount
+ *     tags: [Discounts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Updated
+ *       404:
+ *         description: Not found
+ */
+router.put("/:id",auth,requireRole(["Admin", "Manager"]),discountController.updateDiscount);
+/**
+ * @swagger
+ * /api/discounts/{id}:
+ *   delete:
+ *     summary: Delete discount
+ *     tags: [Discounts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Deleted
+ *       404:
+ *         description: Not found
+ */
+router.delete("/:id",auth,requireRole(["Admin", "Manager"]),discountController.deleteDiscount);
+
 module.exports = router;
+

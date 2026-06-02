@@ -83,3 +83,7 @@ sequelize
   app.use("/api/discounts", discountRoutes);//e maron swagger.ui connection nga discountRoutes.js dhe e vendos ne /api/discounts
 
   app.use("/api/product-discounts", productDiscountRoutes);//e maron swagger.ui connection nga productDiscountRoutes.js dhe e vendos ne /api/product-discounts
+
+  app.use("/uploads", express.static("uploads"));
+
+  app.use("/invoices", express.static("invoices"));

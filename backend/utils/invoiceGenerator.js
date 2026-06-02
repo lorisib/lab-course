@@ -72,7 +72,7 @@ exports.generateInvoicePDF = async ({
       doc.end();
 
       stream.on("finish", () => {
-        resolve(filePath);
+      resolve(`invoices/${fileName}`);
       });
 
       stream.on("error", (err) => {

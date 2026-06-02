@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import api from "../api/axios";
 
-export default function CreateProduct() {
+export default function EditProduct() {
+  const { id } = useParams();
+
   const [form, setForm] = useState({
     sku_code: "",
     name: "",
@@ -15,34 +18,53 @@ export default function CreateProduct() {
   });
 
   const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
 
-  // load dropdown data
+  // LOAD PRODUCT
   useEffect(() => {
-    const loadData = async () => {
+    const fetchData = async () => {
       try {
-        const [c, b] = await Promise.all([
+        const [productRes, catRes, brandRes] = await Promise.all([
+          api.get(`/products/${id}`),
           api.get("/categories"),
           api.get("/brands"),
         ]);
 
-        setCategories(c.data);
-        setBrands(b.data);
+        const p = productRes.data;
+
+        setForm({
+          sku_code: p.sku_code,
+          name: p.name,
+          category_id: p.category_id,
+          brand_id: p.brand_id,
+          size: p.size,
+          color: p.color,
+          price: p.price,
+          stock_quantity: p.stock_quantity,
+          description: p.description,
+        });
+
+        setPreview(
+          p.image_url
+            ? `http://localhost:5000${p.image_url}`
+            : ""
+        );
+
+        setCategories(catRes.data);
+        setBrands(brandRes.data);
       } catch (err) {
         console.log(err);
       }
     };
 
-    loadData();
-  }, []);
+    fetchData();
+  }, [id]);
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -51,33 +73,32 @@ export default function CreateProduct() {
     try {
       const data = new FormData();
 
-      // text fields
       Object.keys(form).forEach((key) => {
         data.append(key, form[key]);
       });
 
-      // image file
       if (image) {
         data.append("image", image);
       }
 
-      await api.post("/products", data, {
+      await api.put(`/products/${id}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      alert("Product created successfully");
+      alert("Product updated successfully");
       window.location.href = "/products";
     } catch (err) {
-      alert(err.response?.data?.message || "Error");
+      alert(err.response?.data?.message || "Error updating");
     }
   };
 
   return (
     <div className="container mt-4">
       <div className="card shadow p-4">
-        <h3 className="mb-3">Create Product</h3>
+
+        <h3 className="mb-3">Edit Product</h3>
 
         <form onSubmit={handleSubmit}>
           <div className="row g-3">
@@ -86,7 +107,7 @@ export default function CreateProduct() {
               <input
                 name="sku_code"
                 className="form-control"
-                placeholder="SKU Code"
+                value={form.sku_code}
                 onChange={handleChange}
               />
             </div>
@@ -95,7 +116,7 @@ export default function CreateProduct() {
               <input
                 name="name"
                 className="form-control"
-                placeholder="Product Name"
+                value={form.name}
                 onChange={handleChange}
               />
             </div>
@@ -104,6 +125,7 @@ export default function CreateProduct() {
             <div className="col-md-6">
               <select
                 className="form-select"
+                value={form.category_id}
                 onChange={(e) =>
                   setForm({ ...form, category_id: e.target.value })
                 }
@@ -121,6 +143,7 @@ export default function CreateProduct() {
             <div className="col-md-6">
               <select
                 className="form-select"
+                value={form.brand_id}
                 onChange={(e) =>
                   setForm({ ...form, brand_id: e.target.value })
                 }
@@ -151,12 +174,12 @@ export default function CreateProduct() {
     <option value="One Size">One Size</option>
     <option value="Custom">Custom</option>
   </select>
-</div>            
+</div>
             <div className="col-md-4">
               <input
                 name="color"
                 className="form-control"
-                placeholder="Color"
+                value={form.color}
                 onChange={handleChange}
               />
             </div>
@@ -164,19 +187,35 @@ export default function CreateProduct() {
             <div className="col-md-4">
               <input
                 name="price"
-                type="number"
                 className="form-control"
-                placeholder="Price"
+                value={form.price}
                 onChange={handleChange}
               />
             </div>
 
             {/* IMAGE UPLOAD */}
             <div className="col-md-12">
+              {preview && (
+                <img
+                  src={preview}
+                  alt="preview"
+                  style={{
+                    width: "120px",
+                    height: "120px",
+                    objectFit: "cover",
+                    marginBottom: "10px",
+                    borderRadius: "8px",
+                  }}
+                />
+              )}
+
               <input
                 type="file"
                 className="form-control"
-                onChange={(e) => setImage(e.target.files[0])}
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                  setPreview(URL.createObjectURL(e.target.files[0]));
+                }}
               />
             </div>
 
@@ -184,19 +223,20 @@ export default function CreateProduct() {
               <textarea
                 name="description"
                 className="form-control"
-                placeholder="Description"
+                value={form.description}
                 onChange={handleChange}
               />
             </div>
 
             <div className="col-md-12">
               <button className="btn btn-primary w-100">
-                Create Product
+                Update Product
               </button>
             </div>
 
           </div>
         </form>
+
       </div>
     </div>
   );

@@ -53,4 +53,11 @@ const Sale = sequelize.define(
   }
 );
 
+Sale.associate = (models) => {
+  Sale.belongsTo(models.Customer, {
+    foreignKey: "customer_id",
+    as: "Customer",
+  });
+};
+
 module.exports = Sale;

@@ -10,7 +10,11 @@ export default function Navbar() {
       <div>
         <Link className="text-white me-3" to="/products">Products</Link>
         <Link className="text-white me-3" to="/sales">Sales</Link>
-        <Link className="text-white" to="/discounts">Discounts</Link>
+        <Link className="text-white me-3" to="/discounts">Discounts</Link>
+        <Link className="text-white me-3" to="/suppliers">Suppliers</Link>
+        <Link className="text-white me-3" to="/purchase">Purchases</Link>
+        <Link className="text-white me-3" to="/discounts/assign">Assign Discount</Link>
+        <Link className="text-white" to="/invoices">Invoices</Link>
       </div>
     </nav>
   );

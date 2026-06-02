@@ -1,5 +1,8 @@
 const db = require("../config/db");
 
+
+// CREATE SUPPLIER
+
 exports.createSupplier = async (req, res) => {
   try {
     const {
@@ -15,8 +18,7 @@ exports.createSupplier = async (req, res) => {
 
     await db.query(
       `
-      INSERT INTO Suppliers
-      (
+      INSERT INTO Suppliers (
         company_name,
         contact_person,
         email,
@@ -26,8 +28,7 @@ exports.createSupplier = async (req, res) => {
         country,
         status
       )
-      VALUES
-      (
+      VALUES (
         :company_name,
         :contact_person,
         :email,
@@ -56,24 +57,44 @@ exports.createSupplier = async (req, res) => {
       message: "Supplier created successfully",
     });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
+
+
+// GET ALL SUPPLIERS
 
 exports.getAllSuppliers = async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM Suppliers");
+    const [rows] = await db.query(`
+      SELECT *
+      FROM Suppliers
+      WHERE status != 'deleted'
+      ORDER BY id DESC
+    `);
 
     res.json(rows);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
+
+
+// GET SUPPLIER BY ID
 
 exports.getSupplierById = async (req, res) => {
   try {
     const [rows] = await db.query(
-      "SELECT * FROM Suppliers WHERE id = :id",
+      `
+      SELECT *
+      FROM Suppliers
+      WHERE id = :id
+      LIMIT 1
+      `,
       {
         replacements: {
           id: req.params.id,
@@ -81,11 +102,22 @@ exports.getSupplierById = async (req, res) => {
       }
     );
 
+    if (!rows.length) {
+      return res.status(404).json({
+        message: "Supplier not found",
+      });
+    }
+
     res.json(rows[0]);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
+
+
+// UPDATE SUPPLIER
 
 exports.updateSupplier = async (req, res) => {
   try {
@@ -97,7 +129,7 @@ exports.updateSupplier = async (req, res) => {
       address,
       city,
       country,
-      status,//statusi mund te jete active, inactive, blacklisted, deleted
+      status,
     } = req.body;
 
     await db.query(
@@ -133,14 +165,23 @@ exports.updateSupplier = async (req, res) => {
       message: "Supplier updated successfully",
     });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
+
+
+// DELETE SUPPLIER 
 
 exports.deleteSupplier = async (req, res) => {
   try {
     await db.query(
-      "DELETE FROM Suppliers WHERE id = :id",
+      `
+      UPDATE Suppliers
+      SET status = 'deleted'
+      WHERE id = :id
+      `,
       {
         replacements: {
           id: req.params.id,
@@ -152,6 +193,8 @@ exports.deleteSupplier = async (req, res) => {
       message: "Supplier deleted successfully",
     });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };

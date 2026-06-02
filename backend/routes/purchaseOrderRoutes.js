@@ -75,7 +75,8 @@ router.post(
  */
 router.get(
   "/",
-  authMiddleware,requireRole(["Admin", "Manager"]),
+  authMiddleware,
+  //requireRole(["Admin", "Manager"]),
   purchaseOrderController.getAllPurchaseOrders
 );
 
@@ -100,7 +101,7 @@ router.get(
 router.get(
   "/:id",
   authMiddleware,
-  requireRole(["Admin", "Manager"]),
+  //requireRole(["Admin", "Manager"]),
   purchaseOrderController.getPurchaseOrderById
 );
 
@@ -125,7 +126,7 @@ router.get(
 router.delete(
   "/:id",
   authMiddleware,
-    requireRole(["Admin", "Manager"]),
+   // requireRole(["Admin", "Manager"]),
   purchaseOrderController.deletePurchaseOrder
 );
 

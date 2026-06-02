@@ -4,6 +4,7 @@ const router = express.Router();
 const productController = require("../controllers/productController");
 const authMiddleware = require("../middleware/authMiddleware");
 const requireRole = require("../middleware/roleMiddleware");
+const upload = require("../middleware/upload");
 
 /**
  * @swagger
@@ -22,15 +23,19 @@ const requireRole = require("../middleware/roleMiddleware");
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Success
+ *         description: List of products
  */
-router.get("/", authMiddleware, productController.getAllProducts);
+router.get(
+  "/",
+  authMiddleware,
+  productController.getAllProducts
+);
 
 /**
  * @swagger
  * /api/products/{id}:
  *   get:
- *     summary: Get product by id
+ *     summary: Get product by ID
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []
@@ -42,24 +47,28 @@ router.get("/", authMiddleware, productController.getAllProducts);
  *           type: integer
  *     responses:
  *       200:
- *         description: Success
+ *         description: Product found
  *       404:
  *         description: Product not found
  */
-router.get("/:id", authMiddleware, productController.getProductById);
+router.get(
+  "/:id",
+  authMiddleware,
+  productController.getProductById
+);
 
 /**
  * @swagger
  * /api/products:
  *   post:
- *     summary: Create product
+ *     summary: Create product (with image upload)
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -99,26 +108,28 @@ router.get("/:id", authMiddleware, productController.getProductById);
  *               low_stock_threshold:
  *                 type: integer
  *                 example: 5
- *               image_url:
- *                 type: string
- *                 example: https://example.com/image.jpg
  *               description:
  *                 type: string
  *                 example: Premium hoodie
- *               status:
+ *               image:
  *                 type: string
- *                 example: active
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Product created
  */
-router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), productController.createProduct);
+router.post(
+  "/",
+  authMiddleware,
+  upload.single("image"),
+  productController.createProduct
+);
 
 /**
  * @swagger
  * /api/products/{id}:
  *   put:
- *     summary: Update product
+ *     summary: Update product (with optional image upload)
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []
@@ -131,7 +142,7 @@ router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), productContro
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -155,19 +166,23 @@ router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), productContro
  *                 type: integer
  *               low_stock_threshold:
  *                 type: integer
- *               image_url:
- *                 type: string
  *               description:
  *                 type: string
- *               status:
+ *               image:
  *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
  *         description: Product updated
  *       404:
  *         description: Product not found
  */
-router.put("/:id", authMiddleware,  requireRole(["Admin", "Manager"] ), productController.updateProduct);
+router.put(
+  "/:id",
+  authMiddleware,
+  upload.single("image"),
+  productController.updateProduct
+);
 
 /**
  * @swagger
@@ -189,6 +204,10 @@ router.put("/:id", authMiddleware,  requireRole(["Admin", "Manager"] ), productC
  *       404:
  *         description: Product not found
  */
-router.delete("/:id", authMiddleware, requireRole(["Admin", "Manager"]), productController.deleteProduct);
+router.delete(
+  "/:id",
+  authMiddleware,
+  productController.deleteProduct
+);
 
 module.exports = router;

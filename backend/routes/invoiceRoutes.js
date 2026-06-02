@@ -3,6 +3,7 @@ const router = express.Router();
 
 const invoiceController = require("../controllers/invoiceController");
 const authMiddleware = require("../middleware/authMiddleware");
+const requireRole  = require("../middleware/roleMiddleware");
 
 /**
  * @swagger
@@ -80,5 +81,27 @@ router.get(
   authMiddleware,
   invoiceController.downloadInvoice
 );
+
+/**
+ * @swagger
+ * /api/invoices/{id}:
+ *   delete:
+ *     summary: Delete invoice (DB + PDF file)
+ *     tags: [Invoices]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Invoice deleted successfully
+ *       404:
+ *         description: Invoice not found
+ */
+router.delete("/:id",authMiddleware,requireRole(["Admin"]),invoiceController.deleteInvoice);
 
 module.exports = router;

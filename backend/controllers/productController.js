@@ -15,9 +15,11 @@ exports.createProduct = async (req, res) => {
       discount_price: req.body.discount_price,
       stock_quantity: req.body.stock_quantity || 0,
       low_stock_threshold: req.body.low_stock_threshold ?? 5,
-      image_url: req.body.image_url,
+      image_url: req.file
+        ? `/uploads/${req.file.filename}`
+        : null,
       description: req.body.description,
-      status: req.body.status || "active"
+      status: req.body.status || "active",
     });
 
     await logActivity({
@@ -26,65 +28,52 @@ exports.createProduct = async (req, res) => {
       entity_name: "Products",
       entity_id: product.id,
       description: `Created product ${product.name}`,
-      ip_address: req.ip
+      ip_address: req.ip,
     });
 
     res.status(201).json({
       message: "Product created",
-      data: product
+      data: product,
     });
-
   } catch (error) {
-  console.log(error);
-
-  res.status(500).json({
-    message: error.message,
-    errors: error.errors || error.original
-  });
-}
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };
-
 // GET ALL
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.findAll({
-  include: ["Category", "Brand"],
-});
+      include: [
+        { model: Category },
+        { model: Brand }
+      ]
+    });
 
     res.json(products);
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 
 // GET BY ID
 exports.getProductById = async (req, res) => {
   try {
-      const product = await Product.findByPk(req.params.id, {
-        include: [
-    {
-      model: Category,
-      as: "Category",
-    },
-    {
-      model: Brand,
-      as: "Brand",
-    },
-  ],
-});
+    const product = await Product.findByPk(req.params.id, {
+      include: [
+        { model: Category },
+        { model: Brand }
+      ]
+    });
+
     if (!product) {
-      return res.status(404).json({
-        message: "Product not found"
-      });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     res.json(product);
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -94,9 +83,7 @@ exports.updateProduct = async (req, res) => {
     const product = await Product.findByPk(req.params.id);
 
     if (!product) {
-      return res.status(404).json({
-        message: "Product not found"
-      });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     await product.update({
@@ -110,19 +97,23 @@ exports.updateProduct = async (req, res) => {
       discount_price: req.body.discount_price,
       stock_quantity: req.body.stock_quantity,
       low_stock_threshold: req.body.low_stock_threshold,
-      image_url: req.body.image_url,
+      image_url: req.file
+        ? `/uploads/${req.file.filename}`
+        : req.body.image_url,
       description: req.body.description,
       status: req.body.status
     });
 
-    await logActivity({
-      user_id: req.user.id,
-      action_type: "PRODUCT_UPDATED",
-      entity_name: "Products",
-      entity_id: product.id,
-      description: `Updated product ${product.name}`,
-      ip_address: req.ip
-    });
+    if (req.user) {
+      await logActivity({
+        user_id: req.user.id,
+        action_type: "PRODUCT_UPDATED",
+        entity_name: "Products",
+        entity_id: product.id,
+        description: `Updated product ${product.name}`,
+        ip_address: req.ip
+      });
+    }
 
     res.json({
       message: "Product updated",
@@ -130,9 +121,7 @@ exports.updateProduct = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -142,29 +131,25 @@ exports.deleteProduct = async (req, res) => {
     const product = await Product.findByPk(req.params.id);
 
     if (!product) {
-      return res.status(404).json({
-        message: "Product not found"
-      });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     await product.destroy();
 
-    await logActivity({
-      user_id: req.user.id,
-      action_type: "PRODUCT_DELETED",
-      entity_name: "Products",
-      entity_id: product.id,
-      description: `Deleted product ${product.name}`,
-      ip_address: req.ip
-    });
+    if (req.user) {
+      await logActivity({
+        user_id: req.user.id,
+        action_type: "PRODUCT_DELETED",
+        entity_name: "Products",
+        entity_id: product.id,
+        description: `Deleted product ${product.name}`,
+        ip_address: req.ip
+      });
+    }
 
-    res.json({
-      message: "Product deleted"
-    });
+    res.json({ message: "Product deleted" });
 
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+    res.status(500).json({ message: error.message });
   }
 };

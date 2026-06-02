@@ -68,9 +68,11 @@ exports.deleteCustomer = async (req, res) => {
       return res.status(404).json({ message: "Not found" });
     }
 
-    await customer.destroy();
+    await customer.update({
+      status: "deleted",
+    });
 
-    res.json({ message: "Customer deleted" });
+    res.json({ message: "Customer deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

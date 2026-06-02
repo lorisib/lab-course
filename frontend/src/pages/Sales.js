@@ -1,193 +1,97 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 
-export default function SalesPage() {
-  const [customers, setCustomers] = useState([]);
-  const [products, setProducts] = useState([]);
+export default function Sales() {
+  const [sales, setSales] = useState([]);
 
-  const [customerId, setCustomerId] = useState("");
-  const [items, setItems] = useState([]);
-
-  // load data
   useEffect(() => {
-    const load = async () => {
-      const c = await api.get("/customers");
-      const p = await api.get("/products");
-
-      setCustomers(c.data);
-      setProducts(p.data);
-    };
-
-    load();
+    fetchSales();
   }, []);
 
-  // add product to cart
-  const addItem = (product) => {
-    const exists = items.find(i => i.product_id === product.id);
-
-    if (exists) {
-      setItems(items.map(i =>
-        i.product_id === product.id
-          ? { ...i, quantity: i.quantity + 1 }
-          : i
-      ));
-    } else {
-      setItems([
-        ...items,
-        {
-          product_id: product.id,
-          name: product.name,
-          price: product.price,
-          quantity: 1
-        }
-      ]);
-    }
-  };
-
-  // update qty
-  const updateQty = (id, qty) => {
-    setItems(items.map(i =>
-      i.product_id === id
-        ? { ...i, quantity: Number(qty) }
-        : i
-    ));
-  };
-
-  // total
-  const total = items.reduce(
-    (sum, i) => sum + i.price * i.quantity,
-    0
-  );
-
-  // submit sale
-  const createSale = async () => {
+  const fetchSales = async () => {
     try {
-      await api.post("/sales", {
-        customer_id: customerId,
-        user_id: 1,
-        items: items.map(i => ({
-          product_id: i.product_id,
-          quantity: i.quantity
-        }))
-      });
-
-      alert("Sale created");
-      setItems([]);
+      const res = await api.get("/sales");
+      setSales(res.data);
     } catch (err) {
-      alert(err.response?.data?.message || "Error");
+      console.log(err);
     }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this sale?")) return;
+
+    try {
+      await api.delete(`/sales/${id}`);
+      fetchSales();
+    } catch (err) {
+      alert(err.response?.data?.message || "Error deleting");
+    }
+  };
+
+  const handleView = (id) => {
+    window.location.href = `/sales/${id}`;
   };
 
   return (
-    <div className="container-fluid p-4">
+    <div className="container-fluid mt-4">
 
-      <div className="row">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h3>Sales</h3>
 
-        {/* LEFT - PRODUCTS */}
-        <div className="col-md-8">
+        <a href="/sales/create" className="btn btn-primary">
+          + Create Sale
+        </a>
+      </div>
 
-          <h4>Products</h4>
+      <div className="table-responsive">
 
-          <div className="row">
+        <table className="table table-bordered table-hover shadow-sm">
 
-            {products.map(p => (
-              <div key={p.id} className="col-md-4 mb-3">
+          <thead className="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Discount</th>
+              <th>Final</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-                <div className="card shadow-sm">
+          <tbody>
+            {sales.map((s) => (
+              <tr key={s.id}>
+                <td>{s.id}</td>
+                <td>
+                {s.Customer? `${s.Customer.first_name} ${s.Customer.last_name}`: "N/A"}</td>
+                <td>${s.total_amount}</td>
+                <td>${s.discount || 0}</td>
+                <td>${s.final_amount}</td>
+                <td>
+                  {new Date(s.createdAt).toLocaleDateString()}
+                </td>
 
-                  {/* IMAGE (OPTIONAL) */}
-                  {p.image_url && (
-                    <img
-                      src={`http://localhost:5000/${p.image_url}`}
-                      className="card-img-top"
-                      style={{ height: "150px", objectFit: "cover" }}
-                    />
-                  )}
+                <td>
+                  <button
+                    className="btn btn-sm btn-outline-primary me-2"
+                    onClick={() => handleView(s.id)}
+                  >
+                    👁
+                  </button>
 
-                  <div className="card-body">
-                    <h6>{p.name}</h6>
-                    <p>${p.price}</p>
-
-                    <button
-                      className="btn btn-primary btn-sm w-100"
-                      onClick={() => addItem(p)}
-                    >
-                      Add
-                    </button>
-                  </div>
-
-                </div>
-
-              </div>
+                  <button
+                    className="btn btn-sm btn-outline-danger"
+                    onClick={() => handleDelete(s.id)}
+                  >
+                    🗑
+                  </button>
+                </td>
+              </tr>
             ))}
+          </tbody>
 
-          </div>
-        </div>
-
-        {/* RIGHT - CART */}
-        <div className="col-md-4">
-
-          <div className="card shadow">
-
-            <div className="card-body">
-
-              <h5>Cart</h5>
-
-              {/* CUSTOMER */}
-              <select
-                className="form-control mb-3"
-                onChange={(e) => setCustomerId(e.target.value)}
-              >
-                <option>Select customer</option>
-                {customers.map(c => (
-                  <option key={c.id} value={c.id}>
-                    {c.first_name} {c.last_name}
-                  </option>
-                ))}
-              </select>
-
-              {/* ITEMS */}
-              {items.map(i => (
-                <div key={i.product_id} className="mb-2">
-
-                  <strong>{i.name}</strong>
-
-                  <div className="d-flex gap-2">
-
-                    <input
-                      type="number"
-                      value={i.quantity}
-                      onChange={(e) =>
-                        updateQty(i.product_id, e.target.value)
-                      }
-                      className="form-control"
-                    />
-
-                    <span className="p-2">
-                      ${i.price * i.quantity}
-                    </span>
-
-                  </div>
-
-                </div>
-              ))}
-
-              <hr />
-
-              <h5>Total: ${total}</h5>
-
-              <button
-                className="btn btn-success w-100 mt-2"
-                onClick={createSale}
-              >
-                Complete Sale
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
+        </table>
 
       </div>
     </div>
