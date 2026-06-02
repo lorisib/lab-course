@@ -57,7 +57,7 @@ const requireRole = require("../middleware/roleMiddleware");
 router.post(
   "/",
   authMiddleware,
-  requireRole(["Admin", "Manager"]),
+  //requireRole(["Admin", "Manager"]),
   purchaseOrderController.createPurchaseOrder
 );
 

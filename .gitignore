@@ -50,3 +50,6 @@ coverage/
 
 # Swagger generated files if any
 swagger-output.json
+
+# Invoices (generated PDFs)
+backend/invoices/

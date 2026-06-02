@@ -1,7 +1,7 @@
 const sequelize = require("../config/db");
 const Sequelize = require("sequelize");
 
-// MODELS (ALL SAME STYLE - NO MIX)
+// MODELS 
 const Product = require("./Product");
 const Category = require("./Category");
 const Brand = require("./Brand");
@@ -18,6 +18,12 @@ const LoyaltyCard = require("./LoyaltyCard");
 const Supplier = require("./Supplier");
 const RefreshToken = require("./RefreshToken");
 const LowStockAlert = require("./LowStockAlert");
+const Invoice = require("./Invoice");
+
+const Discount = require("./Discount");
+const ProductDiscount = require("./ProductDiscount");
+
+
 
 // =====================
 // RELATIONS
@@ -60,6 +66,25 @@ RefreshToken.belongsTo(User, { foreignKey: "user_id" });
 Product.hasMany(LowStockAlert, { foreignKey: "product_id" });
 LowStockAlert.belongsTo(Product, { foreignKey: "product_id" });
 
+// INVOICE
+Sale.hasOne(Invoice, { foreignKey: "sale_id" });
+Invoice.belongsTo(Sale, { foreignKey: "sale_id" });
+
+// DISCOUNTS
+// MANY TO MANY
+Product.belongsToMany(Discount, {
+  through: ProductDiscount,
+  foreignKey: "product_id",
+  otherKey: "discount_id",
+});
+
+Discount.belongsToMany(Product, {
+  through: ProductDiscount,
+  foreignKey: "discount_id",
+  otherKey: "product_id",
+});
+
+
 module.exports = {
   sequelize,
   Sequelize,
@@ -69,6 +94,7 @@ module.exports = {
   Brand,
   Sale,
   SaleDetails,
+  Invoice,
 
   User,
   Role,
@@ -80,4 +106,6 @@ module.exports = {
   Supplier,
   RefreshToken,
   LowStockAlert,
+  Discount,
+  ProductDiscount,
 };
