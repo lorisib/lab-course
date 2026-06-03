@@ -100,6 +100,12 @@ export default function Navbar() {
                 </li>
 
                 <li>
+                  <Link className="dropdown-item" to="/assign-discount">
+                  Assign Discount
+                  </Link>
+                </li>
+
+                <li>
                   <Link className="dropdown-item" to="/purchase">
                     Purchases
                   </Link>
@@ -118,6 +124,12 @@ export default function Navbar() {
                 <li>
                   <Link className="dropdown-item" to="/brands">
                     Brands
+                  </Link>
+                </li>
+
+                <li>
+                  <Link className="dropdown-item" to="/discounts">
+                    Discounts
                   </Link>
                 </li>
 
