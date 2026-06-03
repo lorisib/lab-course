@@ -24,6 +24,6 @@ const requireRole = require("../middleware/roleMiddleware");
  *       200:
  *         description: Success
  */
-router.get("/", authMiddleware,requireRole(["Admin", "Manager"]), activityController.getLogs);
+router.get("/", authMiddleware,requireRole(["Admin"]), activityController.getLogs);
 
 module.exports = router;

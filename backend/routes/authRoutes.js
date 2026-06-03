@@ -11,7 +11,7 @@ const authMiddleware = require("../middleware/authMiddleware");
  *   description: Authentication & Authorization
  */
 
-// ===================== REGISTER
+// REGISTERi
 /**
  * @swagger
  * /api/auth/register:
@@ -52,7 +52,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 router.post("/register", authController.register);
 
 
-// ===================== LOGIN
+// LOGIN
 /**
  * @swagger
  * /api/auth/login:

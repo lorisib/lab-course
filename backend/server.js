@@ -3,7 +3,7 @@ const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 
 
-require("dotenv").config();
+require("dotenv").config();  
 
 const sequelize = require("./config/db");
 const swaggerSpec = require("./config/swagger");
@@ -24,11 +24,19 @@ const loyaltyCardRoutes = require("./routes/loyaltyCardRoutes");
 const invoiceRoutes = require("./routes/invoiceRoutes");
 const discountRoutes = require("./routes/discountRoutes");
 const productDiscountRoutes = require("./routes/productDiscountRoutes");
+const userRoutes = require("./routes/userRoutes");
+
+
 
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -83,6 +91,8 @@ sequelize
   app.use("/api/discounts", discountRoutes);//e maron swagger.ui connection nga discountRoutes.js dhe e vendos ne /api/discounts
 
   app.use("/api/product-discounts", productDiscountRoutes);//e maron swagger.ui connection nga productDiscountRoutes.js dhe e vendos ne /api/product-discounts
+
+  app.use("/api/users", userRoutes);//e maron swagger.ui connection nga userRoutes.js dhe e vendos ne /api/users
 
   app.use("/uploads", express.static("uploads"));
 

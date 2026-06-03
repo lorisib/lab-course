@@ -32,7 +32,7 @@ exports.createPurchaseOrder = async (req, res) => {
         total: lineTotal,
       });
 
-      // RRIT STOCK
+      // RRIT STOCKUN
       await product.update({
         stock_quantity:
           Number(product.stock_quantity) + Number(item.quantity),

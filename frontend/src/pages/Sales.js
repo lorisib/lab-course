@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import { getUser } from "../utils/auth";
 
 export default function Sales() {
   const [sales, setSales] = useState([]);
+
+  const user = getUser();
 
   useEffect(() => {
     fetchSales();
@@ -30,6 +33,7 @@ export default function Sales() {
 
   const handleView = (id) => {
     window.location.href = `/sales/${id}`;
+    
   };
 
   return (
@@ -72,14 +76,16 @@ export default function Sales() {
                 </td>
 
                 <td>
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => handleDelete(s.id)}
-                  >
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </td>
-              </tr>
+                  {!user?.roles?.includes("User") && (
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(s.id)}
+                      >
+                      <i className="fa-solid fa-trash-can"></i>
+                    </button>
+                  )}
+                      </td>              
+</tr>
             ))}
           </tbody>
 

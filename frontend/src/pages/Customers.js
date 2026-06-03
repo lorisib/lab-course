@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import { getUser } from "../utils/auth";
 
 export default function Customers() {
   const [customers, setCustomers] = useState([]);
+
+  const user = getUser();
 
   useEffect(() => {
     fetchCustomers();
@@ -37,13 +40,17 @@ export default function Customers() {
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h3>Customers</h3>
-        <a href="/customers/create" className="btn btn-primary">
-          + Create Customer
-        </a>
+
+        {user?.roles?.includes("Admin") && (
+          <a href="/customers/create" className="btn btn-primary">
+            + Create Customer
+          </a>
+        )}
       </div>
 
       <div className="table-responsive">
         <table className="table table-bordered table-hover shadow-sm">
+
           <thead className="table-dark">
             <tr>
               <th>ID</th>
@@ -53,7 +60,10 @@ export default function Customers() {
               <th>Phone</th>
               <th>City</th>
               <th>Status</th>
-              <th>Actions</th>
+
+              {user?.roles?.includes("Admin") && (
+                <th>Actions</th>
+              )}
             </tr>
           </thead>
 
@@ -66,27 +76,36 @@ export default function Customers() {
                 <td>{c.email}</td>
                 <td>{c.phone}</td>
                 <td>{c.city}</td>
+
                 <td>
-                  <span className={`badge bg-${c.status === "active" ? "success" : "secondary"}`}>
+                  <span
+                    className={`badge bg-${
+                      c.status === "active"
+                        ? "success"
+                        : "secondary"
+                    }`}
+                  >
                     {c.status}
                   </span>
                 </td>
 
-                <td>
-                  <button
-                    className="btn btn-sm btn-outline-primary me-2"
-                    onClick={() => handleEdit(c.id)}
-                  >
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
+                {user?.roles?.includes("Admin") && (
+                  <td>
+                    <button
+                      className="btn btn-sm btn-outline-primary me-2"
+                      onClick={() => handleEdit(c.id)}
+                    >
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </button>
 
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => handleDelete(c.id)}
-                  >
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </td>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(c.id)}
+                    >
+                      <i className="fa-solid fa-trash-can"></i>
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

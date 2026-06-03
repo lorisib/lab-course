@@ -35,7 +35,7 @@ export default function LoyaltyCreate() {
 
     try {
       await api.post("/loyalty", form);
-      window.location.href = "/loyalty";
+      window.location.href = "/loyalty-cards";
     } catch (err) {
       alert(err.response?.data?.message || "Error");
     }

@@ -27,7 +27,7 @@ const requireRole = require("../middleware/roleMiddleware");
  *       401:
  *         description: Unauthorized
  */
-router.get("/kpis", authMiddleware,requireRole(["Admin", "Manager"]) ,dashboardController.getKPIs);
+router.get("/kpis", authMiddleware ,dashboardController.getKPIs);
 
 /**
  * @swagger
@@ -44,7 +44,7 @@ router.get("/kpis", authMiddleware,requireRole(["Admin", "Manager"]) ,dashboardC
  *         description: Unauthorized
  */
 router.get(
-  "/monthly-sales", authMiddleware, requireRole(["Admin", "Manager"]), dashboardController.getMonthlySales);
+  "/monthly-sales", authMiddleware,  dashboardController.getMonthlySales);
 
 /**
  * @swagger
@@ -58,7 +58,7 @@ router.get(
  *       200:
  *         description: List of top selling products
  */
-router.get("/best-selling-products", authMiddleware, requireRole(["Admin", "Manager"]), dashboardController.getBestSellingProducts);
+router.get("/best-selling-products", authMiddleware,  dashboardController.getBestSellingProducts);
 
 
 module.exports = router;

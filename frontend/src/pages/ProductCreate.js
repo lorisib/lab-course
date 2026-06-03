@@ -56,7 +56,6 @@ export default function CreateProduct() {
         data.append(key, form[key]);
       });
 
-      // image file
       if (image) {
         data.append("image", image);
       }

@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const dir = "brand-logos";
 
-// krijo folderin nëse nuk ekziston
+// krijo folderin nese nuk ekziston
 if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir, { recursive: true });
 }

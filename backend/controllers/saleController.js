@@ -52,7 +52,7 @@ exports.createSale = async (req, res) => {
         return res.status(400).json({ message: "Invalid quantity" });
       }
 
-      // 🔥 STOCK CHECK FIX
+      // STOCK
       if (product.stock_quantity < item.quantity) {
         return res.status(400).json({
           message: `Not enough stock for ${product.name}`
@@ -61,7 +61,7 @@ exports.createSale = async (req, res) => {
 
       let finalPrice = Number(product.price);
 
-      // 🔥 DISCOUNT SAFE INCLUDE
+      // DISCOUNT
       const discountLink = await ProductDiscount.findOne({
         where: { product_id: product.id },
         include: [

@@ -25,9 +25,7 @@ const Discount = require("./Discount");
 const ProductDiscount = require("./ProductDiscount");
 
 
-// ======================
-// PRODUCT RELATIONS
-// ======================
+// Lidhjet e produkteve
 Product.belongsTo(Category, { foreignKey: "category_id" });
 Category.hasMany(Product, { foreignKey: "category_id" });
 
@@ -42,9 +40,7 @@ ProductDiscount.belongsTo(Discount, {
   foreignKey: "discount_id"
 });
 
-// ======================
-// SALE RELATIONS
-// ======================
+// Lidhjet e shitjeve
 Sale.hasMany(SaleDetails, { foreignKey: "sale_id" });
 SaleDetails.belongsTo(Sale, { foreignKey: "sale_id" });
 
@@ -52,7 +48,7 @@ Product.hasMany(SaleDetails, { foreignKey: "product_id" });
 SaleDetails.belongsTo(Product, { foreignKey: "product_id" });
 
 
-// CUSTOMER ↔ SALE
+// CUSTOMER dhe  SALE
 Sale.belongsTo(Customer, {
   foreignKey: "customer_id",
   as: "Customer",
@@ -64,9 +60,7 @@ Customer.hasMany(Sale, {
 });
 
 
-// ======================
 // USER ROLES
-// ======================
 User.belongsToMany(Role, {
   through: UserRole,
   foreignKey: "user_id",
@@ -78,37 +72,28 @@ Role.belongsToMany(User, {
 });
 
 
-// ======================
+
+
 // LOYALTY
-// ======================
 Customer.hasOne(LoyaltyCard, { foreignKey: "customer_id" });
 LoyaltyCard.belongsTo(Customer, { foreignKey: "customer_id" });
 
 
-// ======================
 // TOKENS
-// ======================
 User.hasMany(RefreshToken, { foreignKey: "user_id" });
 RefreshToken.belongsTo(User, { foreignKey: "user_id" });
 
 
-// ======================
 // LOW STOCK
-// ======================
 Product.hasMany(LowStockAlert, { foreignKey: "product_id" });
 LowStockAlert.belongsTo(Product, { foreignKey: "product_id" });
 
-
-// ======================
 // INVOICE
-// ======================
 Sale.hasOne(Invoice, { foreignKey: "sale_id" });
 Invoice.belongsTo(Sale, { foreignKey: "sale_id" });
 
 
-// ======================
 // DISCOUNTS
-// ======================
 Product.belongsToMany(Discount, {
   through: ProductDiscount,
   foreignKey: "product_id",

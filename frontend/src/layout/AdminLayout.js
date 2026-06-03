@@ -5,16 +5,15 @@ export default function AdminLayout({ children }) {
   return (
     <div id="wrapper" className="d-flex">
 
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Content Wrapper */}
+     
       <div id="content-wrapper" className="d-flex flex-column w-100">
 
-        {/* Main Content */}
+        
         <div id="content">
 
-          {/* Topbar */}
+         
           <Topbar />
 
           {/* Page Content */}

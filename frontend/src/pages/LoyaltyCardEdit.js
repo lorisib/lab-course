@@ -36,7 +36,7 @@ export default function LoyaltyEdit() {
 
     try {
       await api.put(`/loyalty/${id}`, form);
-      window.location.href = "/loyalty";
+      window.location.href = "/loyalty-cards";
     } catch (err) {
       alert(err.response?.data?.message || "Error");
     }
