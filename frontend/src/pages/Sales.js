@@ -52,8 +52,7 @@ export default function Sales() {
               <th>ID</th>
               <th>Customer</th>
               <th>Total</th>
-              <th>Discount</th>
-              <th>Final</th>
+
               <th>Date</th>
               <th>Actions</th>
             </tr>
@@ -66,25 +65,18 @@ export default function Sales() {
                 <td>
                 {s.Customer? `${s.Customer.first_name} ${s.Customer.last_name}`: "N/A"}</td>
                 <td>${s.total_amount}</td>
-                <td>${s.discount || 0}</td>
-                <td>${s.final_amount}</td>
+
+
                 <td>
-                  {new Date(s.createdAt).toLocaleDateString()}
+                  {s.sale_date ? new Date(s.sale_date).toLocaleDateString() : "N/A"}
                 </td>
 
                 <td>
                   <button
-                    className="btn btn-sm btn-outline-primary me-2"
-                    onClick={() => handleView(s.id)}
-                  >
-                    👁
-                  </button>
-
-                  <button
                     className="btn btn-sm btn-outline-danger"
                     onClick={() => handleDelete(s.id)}
                   >
-                    🗑
+                    <i class="fa-solid fa-trash-can"></i>
                   </button>
                 </td>
               </tr>

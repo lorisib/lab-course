@@ -15,32 +15,33 @@ exports.createProduct = async (req, res) => {
       discount_price: req.body.discount_price,
       stock_quantity: req.body.stock_quantity || 0,
       low_stock_threshold: req.body.low_stock_threshold ?? 5,
-      image_url: req.file
-        ? `/uploads/${req.file.filename}`
-        : null,
+      image_url: req.file ? `/uploads/${req.file.filename}` : null,
       description: req.body.description,
-      status: req.body.status || "active",
+      status: req.body.status || "active"
     });
 
-    await logActivity({
-      user_id: req.user.id,
-      action_type: "PRODUCT_CREATED",
-      entity_name: "Products",
-      entity_id: product.id,
-      description: `Created product ${product.name}`,
-      ip_address: req.ip,
-    });
+    if (req.user) {
+      await logActivity({
+        user_id: req.user.id,
+        action_type: "PRODUCT_CREATED",
+        entity_name: "Products",
+        entity_id: product.id,
+        description: `Created product ${product.name}`,
+        ip_address: req.ip
+      });
+    }
 
     res.status(201).json({
       message: "Product created",
-      data: product,
+      data: product
     });
+
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };
+
 // GET ALL
 exports.getAllProducts = async (req, res) => {
   try {

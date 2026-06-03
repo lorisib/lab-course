@@ -112,6 +112,23 @@ exports.createSale = async (req, res) => {
 
     await sale.update({ total_amount: total });
 
+const card = await LoyaltyCard.findOne({ where: { customer_id } });
+
+if (card) {
+  const pointsToAdd = Math.floor(total / 10);
+
+  const newPoints = Number(card.total_points || 0) + pointsToAdd;
+
+  let level = "Bronze";
+  if (newPoints >= 1000) level = "Platinum";
+  else if (newPoints >= 500) level = "Gold";
+  else if (newPoints >= 200) level = "Silver";
+
+  await card.update({
+    total_points: newPoints,
+    level
+  });
+}
     const pdfPath = await generateInvoicePDF({
       sale,
       customer,

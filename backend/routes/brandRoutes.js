@@ -4,13 +4,13 @@ const router = express.Router();
 const brandController = require("../controllers/brandController");
 const authMiddleware = require("../middleware/authMiddleware");
 const requireRole = require("../middleware/roleMiddleware");
-
+const uploadBrand = require("../middleware/uploadBrand");
 
 /**
  * @swagger
  * tags:
  *   name: Brands
- *   description: Brand management
+ *   description: Brand management module
  */
 
 /**
@@ -23,15 +23,19 @@ const requireRole = require("../middleware/roleMiddleware");
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Success
+ *         description: List of brands
  */
-router.get("/", authMiddleware, brandController.getAllBrands);
+router.get(
+  "/",
+  authMiddleware,
+  brandController.getAllBrands
+);
 
 /**
  * @swagger
  * /api/brands/{id}:
  *   get:
- *     summary: Get brand by id
+ *     summary: Get brand by ID
  *     tags: [Brands]
  *     security:
  *       - bearerAuth: []
@@ -43,9 +47,15 @@ router.get("/", authMiddleware, brandController.getAllBrands);
  *           type: integer
  *     responses:
  *       200:
- *         description: Success
+ *         description: Brand found
+ *       404:
+ *         description: Not found
  */
-router.get("/:id", authMiddleware, brandController.getBrandById);
+router.get(
+  "/:id",
+  authMiddleware,
+  brandController.getBrandById
+);
 
 /**
  * @swagger
@@ -58,7 +68,7 @@ router.get("/:id", authMiddleware, brandController.getBrandById);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -68,15 +78,25 @@ router.get("/:id", authMiddleware, brandController.getBrandById);
  *                 type: string
  *               country_of_origin:
  *                 type: string
- *               logo_url:
- *                 type: string
  *               description:
  *                 type: string
+ *               status:
+ *                 type: string
+ *                 enum: [active, inactive, deleted]
+ *               logo:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
- *         description: Created
+ *         description: Brand created
  */
-router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), brandController.createBrand);
+router.post(
+  "/",
+  authMiddleware,
+  requireRole(["Admin", "Manager"]),
+  uploadBrand.single("logo"),
+  brandController.createBrand
+);
 
 /**
  * @swagger
@@ -95,30 +115,36 @@ router.post("/", authMiddleware,requireRole(["Admin", "Manager"]), brandControll
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
  *               name:
  *                 type: string
- *                 example: Nike
  *               country_of_origin:
  *                 type: string
- *                 example: USA
- *               logo_url:
- *                 type: string
- *                 example: https://logo.com/nike.png
  *               description:
  *                 type: string
- *                 example: Sportswear brand
  *               status:
  *                 type: string
- *                 example: active
+ *                 enum: [active, inactive, deleted]
+ *               logo:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
- *         description: Updated
+ *         description: Brand updated
+ *       404:
+ *         description: Not found
  */
-router.put("/:id", authMiddleware,requireRole(["Admin", "Manager"]), brandController.updateBrand);
+router.put(
+  "/:id",
+  authMiddleware,
+  requireRole(["Admin", "Manager"]),
+  uploadBrand.single("logo"),
+  brandController.updateBrand
+);
+
 /**
  * @swagger
  * /api/brands/{id}:
@@ -135,8 +161,15 @@ router.put("/:id", authMiddleware,requireRole(["Admin", "Manager"]), brandContro
  *           type: integer
  *     responses:
  *       200:
- *         description: Deleted
+ *         description: Brand deleted
+ *       404:
+ *         description: Not found
  */
-router.delete("/:id", authMiddleware,requireRole(["Admin", "Manager"]), brandController.deleteBrand);
+router.delete(
+  "/:id",
+  authMiddleware,
+  requireRole(["Admin", "Manager"]),
+  brandController.deleteBrand
+);
 
 module.exports = router;

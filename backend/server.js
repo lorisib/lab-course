@@ -87,3 +87,5 @@ sequelize
   app.use("/uploads", express.static("uploads"));
 
   app.use("/invoices", express.static("invoices"));
+  
+  app.use("/brand-logos", express.static("brand-logos"));

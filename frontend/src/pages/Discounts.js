@@ -70,14 +70,14 @@ export default function Discounts() {
                   className="btn btn-sm btn-outline-primary"
                   onClick={() => handleEdit(d.id)}
                 >
-                  ✏️ Edit
+                    <i class="fa-solid fa-pen-to-square"></i>
                 </button>
 
                 <button
                   className="btn btn-sm btn-outline-danger"
                   onClick={() => handleDelete(d.id)}
                 >
-                  🗑 Delete
+                  <i class="fa-solid fa-trash-can"></i>
                 </button>
 
               </div>

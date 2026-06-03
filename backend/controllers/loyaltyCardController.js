@@ -54,3 +54,42 @@ exports.getCard = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getAllCards = async (req, res) => {
+  try {
+    const cards = await LoyaltyCard.findAll({
+      include: [
+        {
+          model: Customer,
+          attributes: ["first_name", "last_name"]
+        }
+      ]
+    });
+
+    res.json(cards);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// UPDATE
+exports.updateCard = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const card = await LoyaltyCard.findByPk(id);
+
+    if (!card) {
+      return res.status(404).json({ message: "Loyalty card not found" });
+    }
+
+    await card.update(req.body);
+
+    res.json({
+      message: "Loyalty card updated successfully",
+      data: card
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

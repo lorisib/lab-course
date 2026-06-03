@@ -14,7 +14,9 @@ export default function Navbar() {
         <Link className="text-white me-3" to="/suppliers">Suppliers</Link>
         <Link className="text-white me-3" to="/purchase">Purchases</Link>
         <Link className="text-white me-3" to="/discounts/assign">Assign Discount</Link>
-        <Link className="text-white" to="/invoices">Invoices</Link>
+        <Link className="text-white me-3" to="/invoices">Invoices</Link>
+        <Link className="text-white me-3" to="/loyalty-cards">Loyalty Cards</Link>
+        <Link className="text-white" to="/categories">Categories</Link>
       </div>
     </nav>
   );

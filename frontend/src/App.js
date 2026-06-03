@@ -22,6 +22,11 @@ import AssignDiscount from "./pages/AssignDiscount";
 import DiscountCreate from "./pages/DiscountCreate";
 import DiscountEdit from "./pages/DiscountEdit";
 import Invoices from "./pages/Invoices";
+import LoyaltyCards from "./pages/LoyaltyCards";
+import LoyaltyCardCreate from "./pages/LoyaltyCardCreate";
+import LoyaltyCardEdit from "./pages/LoyaltyCardEdit";
+import Brands from "./pages/Brand";
+import Category from "./pages/Category";
 
 
 function App() {
@@ -53,8 +58,11 @@ function App() {
           <Route path="/discounts/edit/:id" element={<ProtectedRoute><DiscountEdit /></ProtectedRoute>} />
           <Route path="/discounts/assign" element={<ProtectedRoute><AssignDiscount /></ProtectedRoute>} />
           <Route path="/invoices" element={<ProtectedRoute><Invoices /></ProtectedRoute>} />
-
-
+          <Route path="/loyalty-cards" element={<LoyaltyCards />} />
+          <Route path="/loyalty-cards/create" element={<LoyaltyCardCreate />} />
+          <Route path="/loyalty-cards/edit/:id" element={<LoyaltyCardEdit />} />
+          <Route path="/brands" element={<Brands />} />
+          <Route path="/categories" element={<Category />} />
         </Routes>
       </div>
     </BrowserRouter>

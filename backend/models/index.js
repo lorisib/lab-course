@@ -122,6 +122,8 @@ Discount.belongsToMany(Product, {
 });
 
 
+
+
 // EXPORT
 module.exports = {
   sequelize,

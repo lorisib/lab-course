@@ -54,3 +54,5 @@ swagger-output.json
 
 # Invoices (generated PDFs)
 backend/invoices/
+
+backend/brand_logos/

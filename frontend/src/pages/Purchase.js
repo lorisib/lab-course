@@ -52,7 +52,6 @@ export default function Purchases() {
               <th>Order Number</th>
               <th>Total</th>
               <th>Status</th>
-              <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -68,7 +67,6 @@ export default function Purchases() {
                     {o.status}
                   </span>
                 </td>
-                <td>{new Date(o.createdAt).toLocaleDateString()}</td>
                 <td>
 
                   <button
