@@ -47,15 +47,15 @@ export default function SupplierEdit() {
         <h3>Edit Supplier</h3>
 
         <form onSubmit={handleSubmit}>
-          <input name="company_name" value={form.company_name} className="form-control mb-2" onChange={handleChange} />
-          <input name="contact_person" value={form.contact_person} className="form-control mb-2" onChange={handleChange} />
-          <input name="email" value={form.email} className="form-control mb-2" onChange={handleChange} />
-          <input name="phone" value={form.phone} className="form-control mb-2" onChange={handleChange} />
-          <input name="address" value={form.address} className="form-control mb-2" onChange={handleChange} />
-          <input name="city" value={form.city} className="form-control mb-2" onChange={handleChange} />
-          <input name="country" value={form.country} className="form-control mb-2" onChange={handleChange} />
+          <input required name="company_name" value={form.company_name} className="form-control mb-2" onChange={handleChange} />
+          <input required name="contact_person" value={form.contact_person} className="form-control mb-2" onChange={handleChange} />
+          <input required name="email" value={form.email} className="form-control mb-2" onChange={handleChange} />
+          <input required name="phone" value={form.phone} className="form-control mb-2" onChange={handleChange} />
+          <input required name="address" value={form.address} className="form-control mb-2" onChange={handleChange} />
+          <input required name="city" value={form.city} className="form-control mb-2" onChange={handleChange} />
+          <input required name="country" value={form.country} className="form-control mb-2" onChange={handleChange} />
 
-          <select name="status" value={form.status} className="form-control mb-3" onChange={handleChange}>
+          <select required name="status" value={form.status} className="form-control mb-3" onChange={handleChange}>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
             <option value="blacklisted">Blacklisted</option>

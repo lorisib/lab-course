@@ -83,6 +83,7 @@ export default function CreateProduct() {
 
             <div className="col-md-6">
               <input
+              required
                 name="sku_code"
                 className="form-control"
                 placeholder="SKU Code"
@@ -92,6 +93,7 @@ export default function CreateProduct() {
 
             <div className="col-md-6">
               <input
+              required
                 name="name"
                 className="form-control"
                 placeholder="Product Name"
@@ -102,6 +104,7 @@ export default function CreateProduct() {
             {/* CATEGORY */}
             <div className="col-md-6">
               <select
+              required
                 className="form-select"
                 onChange={(e) =>
                   setForm({ ...form, category_id: e.target.value })
@@ -119,6 +122,7 @@ export default function CreateProduct() {
             {/* BRAND */}
             <div className="col-md-6">
               <select
+              required
                 className="form-select"
                 onChange={(e) =>
                   setForm({ ...form, brand_id: e.target.value })
@@ -135,11 +139,12 @@ export default function CreateProduct() {
 
 <div className="col-md-4">
   <select
+  required
     name="size"
     className="form-select"
     onChange={handleChange}
   >
-    <option value="">Select Size</option>
+    <option  value="">Select Size</option>
     <option value="XS">XS</option>
     <option value="S">S</option>
     <option value="M">M</option>
@@ -153,6 +158,7 @@ export default function CreateProduct() {
 </div>            
             <div className="col-md-4">
               <input
+              required
                 name="color"
                 className="form-control"
                 placeholder="Color"
@@ -162,6 +168,7 @@ export default function CreateProduct() {
 
             <div className="col-md-4">
               <input
+              required
                 name="price"
                 type="number"
                 className="form-control"
@@ -173,6 +180,7 @@ export default function CreateProduct() {
             {/* IMAGE UPLOAD */}
             <div className="col-md-12">
               <input
+              required
                 type="file"
                 className="form-control"
                 onChange={(e) => setImage(e.target.files[0])}
@@ -181,6 +189,7 @@ export default function CreateProduct() {
 
             <div className="col-md-12">
               <textarea
+              required
                 name="description"
                 className="form-control"
                 placeholder="Description"

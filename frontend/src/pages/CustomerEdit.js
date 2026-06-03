@@ -46,14 +46,14 @@ export default function CustomerEdit() {
         <h3>Edit Customer</h3>
 
         <form onSubmit={handleSubmit}>
-          <input name="first_name" value={form.first_name} className="form-control mb-2" onChange={handleChange} />
-          <input name="last_name" value={form.last_name} className="form-control mb-2" onChange={handleChange} />
-          <input name="email" value={form.email} className="form-control mb-2" onChange={handleChange} />
-          <input name="phone" value={form.phone} className="form-control mb-2" onChange={handleChange} />
-          <input name="city" value={form.city} className="form-control mb-2" onChange={handleChange} />
-          <input name="address" value={form.address} className="form-control mb-2" onChange={handleChange} />
+          <input required name="first_name" value={form.first_name} className="form-control mb-2" onChange={handleChange} />
+          <input required name="last_name" value={form.last_name} className="form-control mb-2" onChange={handleChange} />
+          <input required name="email" value={form.email} className="form-control mb-2" onChange={handleChange} />
+          <input required name="phone" value={form.phone} className="form-control mb-2" onChange={handleChange} />
+          <input required name="city" value={form.city} className="form-control mb-2" onChange={handleChange} />
+          <input required name="address" value={form.address} className="form-control mb-2" onChange={handleChange} />
 
-          <select name="status" value={form.status} className="form-control mb-3" onChange={handleChange}>
+          <select required name="status" value={form.status} className="form-control mb-3" onChange={handleChange}>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>

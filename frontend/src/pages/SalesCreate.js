@@ -86,6 +86,7 @@ export default function SalesCreate() {
 
         <form onSubmit={handleSubmit}>
           <select
+          required
             className="form-select mb-3"
             onChange={(e) =>
               setForm({ ...form, customer_id: e.target.value })
@@ -111,6 +112,7 @@ export default function SalesCreate() {
             <div className="row mb-2" key={i}>
               <div className="col-md-6">
                 <select
+                required
                   className="form-select"
                   value={item.product_id}
                   onChange={(e) =>

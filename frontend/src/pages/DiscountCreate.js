@@ -37,6 +37,7 @@ export default function DiscountCreate() {
         <form onSubmit={handleSubmit}>
 
           <input
+          required
             name="name"
             className="form-control mt-2"
             placeholder="Discount Name"
@@ -44,6 +45,7 @@ export default function DiscountCreate() {
           />
 
           <select
+          required
             name="discount_type"
             className="form-select mt-2"
             onChange={handleChange}
@@ -53,6 +55,7 @@ export default function DiscountCreate() {
           </select>
 
           <input
+          required
             name="value"
             type="number"
             className="form-control mt-2"
@@ -61,6 +64,7 @@ export default function DiscountCreate() {
           />
 
           <input
+          required
             type="date"
             name="start_date"
             className="form-control mt-2"
@@ -68,6 +72,7 @@ export default function DiscountCreate() {
           />
 
           <input
+          required
             type="date"
             name="end_date"
             className="form-control mt-2"
@@ -75,6 +80,7 @@ export default function DiscountCreate() {
           />
 
           <select
+          required
             name="status"
             className="form-select mt-2"
             onChange={handleChange}

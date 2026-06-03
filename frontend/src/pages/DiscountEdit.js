@@ -52,6 +52,7 @@ export default function DiscountEdit() {
         <form onSubmit={handleSubmit}>
 
           <input
+          required
             name="name"
             className="form-control mt-2"
             value={form.name || ""}
@@ -59,6 +60,7 @@ export default function DiscountEdit() {
           />
 
           <select
+          required
             name="discount_type"
             className="form-select mt-2"
             value={form.discount_type || ""}
@@ -69,6 +71,7 @@ export default function DiscountEdit() {
           </select>
 
           <input
+          required
             name="value"
             type="number"
             className="form-control mt-2"
@@ -77,6 +80,7 @@ export default function DiscountEdit() {
           />
 
           <input
+          required
             type="date"
             name="start_date"
             className="form-control mt-2"
@@ -85,6 +89,7 @@ export default function DiscountEdit() {
           />
 
           <input
+          required
             type="date"
             name="end_date"
             className="form-control mt-2"
@@ -93,6 +98,7 @@ export default function DiscountEdit() {
           />
 
           <select
+          required
             name="status"
             className="form-select mt-2"
             value={form.status || ""}

@@ -105,6 +105,7 @@ export default function EditProduct() {
 
             <div className="col-md-6">
               <input
+              required
                 name="sku_code"
                 className="form-control"
                 value={form.sku_code}
@@ -114,6 +115,7 @@ export default function EditProduct() {
 
             <div className="col-md-6">
               <input
+              required
                 name="name"
                 className="form-control"
                 value={form.name}
@@ -124,6 +126,7 @@ export default function EditProduct() {
             {/* CATEGORY */}
             <div className="col-md-6">
               <select
+              required
                 className="form-select"
                 value={form.category_id}
                 onChange={(e) =>
@@ -142,6 +145,7 @@ export default function EditProduct() {
             {/* BRAND */}
             <div className="col-md-6">
               <select
+              required
                 className="form-select"
                 value={form.brand_id}
                 onChange={(e) =>
@@ -159,6 +163,7 @@ export default function EditProduct() {
 
 <div className="col-md-4">
   <select
+  required
     name="size"
     className="form-select"
     onChange={handleChange}
@@ -177,6 +182,7 @@ export default function EditProduct() {
 </div>
             <div className="col-md-4">
               <input
+              required
                 name="color"
                 className="form-control"
                 value={form.color}
@@ -210,6 +216,8 @@ export default function EditProduct() {
               )}
 
               <input
+              required
+
                 type="file"
                 className="form-control"
                 onChange={(e) => {
@@ -225,6 +233,7 @@ export default function EditProduct() {
                 className="form-control"
                 value={form.description}
                 onChange={handleChange}
+                required
               />
             </div>
 

@@ -78,6 +78,7 @@ const handleChange = (index, field, value) => {
         <form onSubmit={handleSubmit}>
 
           <select
+          required
             className="form-select mb-3"
             onChange={(e) =>
               setForm({

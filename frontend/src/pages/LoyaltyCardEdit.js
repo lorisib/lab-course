@@ -50,6 +50,7 @@ export default function LoyaltyEdit() {
         <form onSubmit={handleSubmit}>
 
           <input
+          required
             name="total_points"
             type="number"
             className="form-control mt-2"
@@ -59,6 +60,7 @@ export default function LoyaltyEdit() {
 
           {/* LEVEL */}
           <select
+          required
             name="level"
             className="form-select mt-2"
             value={form.level || ""}
@@ -72,6 +74,7 @@ export default function LoyaltyEdit() {
 
           {/* STATUS */}
           <select
+          required
             name="status"
             className="form-select mt-2"
             value={form.status || ""}
@@ -84,6 +87,7 @@ export default function LoyaltyEdit() {
           </select>
 
           <input
+          required
             type="date"
             name="issue_date"
             className="form-control mt-2"
@@ -92,6 +96,7 @@ export default function LoyaltyEdit() {
           />
 
           <input
+          required
             type="date"
             name="expiration_date"
             className="form-control mt-2"

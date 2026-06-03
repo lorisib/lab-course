@@ -50,6 +50,7 @@ export default function LoyaltyCreate() {
 
           {/* CUSTOMER */}
           <select
+          required
             name="customer_id"
             className="form-select mt-2"
             onChange={handleChange}
@@ -65,6 +66,7 @@ export default function LoyaltyCreate() {
 
           {/* POINTS */}
           <input
+          required
             type="number"
             name="total_points"
             className="form-control mt-2"
@@ -75,6 +77,7 @@ export default function LoyaltyCreate() {
 
           {/* LEVEL ENUM */}
           <select
+          required
             name="level"
             className="form-select mt-2"
             value={form.level}
@@ -88,6 +91,7 @@ export default function LoyaltyCreate() {
 
           {/* STATUS ENUM */}
           <select
+          required
             name="status"
             className="form-select mt-2"
             value={form.status}
@@ -101,6 +105,7 @@ export default function LoyaltyCreate() {
 
           {/* DATES */}
           <input
+          required
             type="date"
             name="issue_date"
             className="form-control mt-2"
@@ -109,6 +114,7 @@ export default function LoyaltyCreate() {
           />
 
           <input
+          required
             type="date"
             name="expiration_date"
             className="form-control mt-2"
