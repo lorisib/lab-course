@@ -6,13 +6,18 @@ import AppRoutes from "./routes/AppRoutes";
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+      <div className="d-flex flex-column min-vh-100">
 
-      <div className="container mt-4 flex-grow-1">
-        <AppRoutes />
+        <Navbar />
+
+        {/* CONTENT */}
+        <div className="flex-grow-1 container mt-4">
+          <AppRoutes />
+        </div>
+
+        <Footer />
+
       </div>
-
-      <Footer />
     </BrowserRouter>
   );
 }
